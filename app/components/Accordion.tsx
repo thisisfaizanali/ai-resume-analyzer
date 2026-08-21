@@ -72,7 +72,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
                                                                 className = "",
                                                             }) => {
     return (
-        <div className={`overflow-hidden border-b border-gray-200 ${className}`}>
+        <div className={`border-t border-[oklch(1_0_0/10%)] ${className}`}>
             {children}
         </div>
     );
@@ -97,22 +97,14 @@ export const AccordionHeader: React.FC<AccordionHeaderProps> = ({
     const isActive = isItemActive(itemId);
 
     const defaultIcon = (
-        <svg
-            className={cn("w-5 h-5 transition-transform duration-200", {
-                "rotate-180": isActive,
-            })}
-            fill="none"
-            stroke="#98A2B3"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+        <span
+            className={cn(
+                "ml-5 w-3.5 text-center font-mono",
+                isActive ? "text-[oklch(0.85_0.19_140)]" : "text-[oklch(0.63_0.014_260)]"
+            )}
         >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-            />
-        </svg>
+            {isActive ? "−" : "+"}
+        </span>
     );
 
     const handleClick = () => {
@@ -123,7 +115,7 @@ export const AccordionHeader: React.FC<AccordionHeaderProps> = ({
         <button
             onClick={handleClick}
             className={`
-        w-full px-4 py-3 text-left
+        w-full py-[18px] text-left
         focus:outline-none
         transition-colors duration-200 flex items-center justify-between cursor-pointer
         ${className}
@@ -160,7 +152,7 @@ export const AccordionContent: React.FC<AccordionContentProps> = ({
         ${className}
       `}
         >
-            <div className="px-4 py-3 ">{children}</div>
+            <div className="pb-5">{children}</div>
         </div>
     );
 };

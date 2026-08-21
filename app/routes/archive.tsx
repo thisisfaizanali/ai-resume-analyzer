@@ -1,21 +1,19 @@
-import type { Route } from "./+types/home";
 import ResumeCard from "~/components/ResumeCard";
 import {usePuterStore} from "~/lib/puter";
-import {Link} from "react-router";
+import {Link, useNavigate} from "react-router";
 import {useEffect, useMemo, useState} from "react";
 import {deleteResume, toggleResumeArchived} from "~/lib/utils";
 
 const inputClass = "w-full !rounded-none border border-[oklch(1_0_0/14%)] !bg-[oklch(0.21_0.015_260)] p-3 !shadow-none text-sm !text-[oklch(0.96_0.006_260)] outline-none transition-colors focus:border-[oklch(0.85_0.19_140)]";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Resumind" },
-    { name: "description", content: "Smart feedback for your dream job!" },
-  ];
-}
+export const meta = () => ([
+  { title: "Resumind | Archive" },
+  { name: "description", content: "Resumes you've archived from your dashboard." },
+])
 
-export default function Home() {
-  const { auth, kv, fs, isLoading } = usePuterStore();
+export default function Archive() {
+  const { auth, kv, fs } = usePuterStore();
+  const navigate = useNavigate();
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [loadingResumes, setLoadingResumes] = useState(false);
   const [query, setQuery] = useState('');
@@ -35,8 +33,10 @@ export default function Home() {
   }, [resumes, query, sortBy]);
 
   useEffect(() => {
-    if (!auth.isAuthenticated) return;
+    if(!auth.isAuthenticated) navigate('/auth?next=/archive');
+  }, [auth.isAuthenticated])
 
+  useEffect(() => {
     const loadResumes = async () => {
       setLoadingResumes(true);
 
@@ -46,12 +46,12 @@ export default function Home() {
           JSON.parse(resume.value) as Resume
       ))
 
-      setResumes(parsedResumes?.filter((resume) => !resume.archived) || []);
+      setResumes(parsedResumes?.filter((resume) => resume.archived) || []);
       setLoadingResumes(false);
     }
 
     loadResumes()
-  }, [auth.isAuthenticated]);
+  }, []);
 
   const handleToggleArchive = async (id: string) => {
     await toggleResumeArchived(kv, id);
@@ -74,21 +74,17 @@ export default function Home() {
             [ RESUMIND ]
           </Link>
           <div className="flex shrink-0 items-center gap-6 md:gap-9">
-            {auth.isAuthenticated && (
-              <>
-                <Link to="/" className="hidden font-mono text-xs tracking-[0.08em] whitespace-nowrap text-[oklch(0.96_0.006_260)] uppercase sm:inline">
-                  Dashboard
-                </Link>
-                <Link to="/archive" className="hidden font-mono text-xs tracking-[0.08em] whitespace-nowrap text-[oklch(0.63_0.014_260)] uppercase transition-colors hover:text-[oklch(0.96_0.006_260)] sm:inline">
-                  Archive
-                </Link>
-                <button onClick={auth.signOut} className="hidden font-mono text-xs tracking-[0.08em] whitespace-nowrap text-[oklch(0.63_0.014_260)] uppercase transition-colors hover:text-[oklch(0.72_0.19_20)] sm:inline">
-                  Log Out
-                </button>
-              </>
-            )}
+            <Link to="/" className="hidden font-mono text-xs tracking-[0.08em] whitespace-nowrap text-[oklch(0.63_0.014_260)] uppercase transition-colors hover:text-[oklch(0.96_0.006_260)] sm:inline">
+              Dashboard
+            </Link>
+            <Link to="/archive" className="hidden font-mono text-xs tracking-[0.08em] whitespace-nowrap text-[oklch(0.96_0.006_260)] uppercase sm:inline">
+              Archive
+            </Link>
+            <button onClick={auth.signOut} className="hidden font-mono text-xs tracking-[0.08em] whitespace-nowrap text-[oklch(0.63_0.014_260)] uppercase transition-colors hover:text-[oklch(0.72_0.19_20)] sm:inline">
+              Log Out
+            </button>
             <Link
-              to={auth.isAuthenticated ? "/upload" : "/auth?next=/upload"}
+              to="/upload"
               className="shrink-0 bg-[oklch(0.85_0.19_140)] px-[22px] py-3 text-[13px] font-bold whitespace-nowrap text-[oklch(0.16_0.014_260)] transition-[background,box-shadow] hover:bg-[oklch(0.9_0.19_140)] hover:shadow-[0_0_24px_oklch(0.85_0.19_140/40%)]"
             >
               Upload Resume
@@ -98,62 +94,25 @@ export default function Home() {
 
         <div className="animate-[fadeUp_0.6s_ease_both] px-8 pt-20 pb-12 md:px-14">
           <p className="mb-[18px] flex items-center gap-2 font-mono text-[13px] tracking-[0.1em] text-[oklch(0.85_0.19_140)]">
-            // RESUME INTELLIGENCE
+            // ARCHIVED RESUMES
             <span className="inline-block h-3.5 w-2 animate-[blink_1.2s_step-end_infinite] bg-[oklch(0.85_0.19_140)]" />
           </p>
           <h1 className="!bg-none !bg-clip-border max-w-[920px] !text-5xl !leading-none !font-bold !tracking-[-1.5px] !text-[oklch(0.96_0.006_260)] md:!text-7xl lg:!text-[76px]">
-            TRACK YOUR APPLICATIONS &amp; RESUME RATINGS
+            ARCHIVED APPLICATIONS
           </h1>
           <p className="mt-[22px] max-w-[560px] text-lg leading-normal text-[oklch(0.63_0.014_260)]">
-            Review your submissions and check AI-powered feedback.
+            Resumes you've archived from your dashboard.
           </p>
         </div>
 
-        {!auth.isAuthenticated && (
-          <div className="flex min-h-[420px] flex-col items-center justify-center gap-7 px-8 pt-[40px] pb-[120px] text-center md:px-14">
-            <div className="w-[480px] max-w-full animate-[fadeUp_0.5s_ease_both] border border-[oklch(1_0_0/8%)] bg-[oklch(0.21_0.015_260)] p-14">
-              <h2 className="!bg-none !bg-clip-border mb-3 !text-[32px] !leading-none !font-bold !tracking-normal !text-[oklch(0.96_0.006_260)]">
-                WELCOME
-              </h2>
-              <p className="mb-7 text-[15px] text-[oklch(0.63_0.014_260)]">
-                Log in to see your dashboard and start tracking applications.
-              </p>
-              <p className="mb-2 font-mono text-[11px] tracking-[0.08em] text-[oklch(0.85_0.19_140)] uppercase">
-                [ OAuth via Puter.js ]
-              </p>
-
-              {isLoading ? (
-                <button
-                  disabled
-                  className="w-full animate-[pulse-soft_1.4s_ease-in-out_infinite] bg-[oklch(0.85_0.19_140/60%)] p-[18px] text-[15px] font-bold text-[oklch(0.16_0.014_260)]"
-                >
-                  SIGNING YOU IN...
-                </button>
-              ) : (
-                <>
-                  <button
-                    onClick={auth.signIn}
-                    className="mt-3 w-full cursor-pointer bg-[oklch(0.85_0.19_140)] p-[18px] text-[15px] font-bold text-[oklch(0.16_0.014_260)] transition-shadow hover:shadow-[0_0_24px_oklch(0.85_0.19_140/40%)]"
-                  >
-                    LOG IN WITH PUTER &#8594;
-                  </button>
-                  <p className="mt-4 text-xs text-[oklch(0.5_0.014_260)]">
-                    You'll be redirected to Puter to authorize — no password needed here.
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-
-        {auth.isAuthenticated && loadingResumes && (
+        {loadingResumes && (
           <div className="flex flex-col items-center gap-5 px-8 pt-[60px] pb-[120px] md:px-14">
             <div className="h-9 w-9 animate-spin rounded-full border-[3px] border-[oklch(1_0_0/12%)] border-t-[oklch(0.85_0.19_140)]" />
-            <p className="font-mono text-[13px] text-[oklch(0.63_0.014_260)]">loading your resumes...</p>
+            <p className="font-mono text-[13px] text-[oklch(0.63_0.014_260)]">loading your archive...</p>
           </div>
         )}
 
-        {auth.isAuthenticated && !loadingResumes && resumes.length > 0 && (
+        {!loadingResumes && resumes.length > 0 && (
           <div className="flex flex-col gap-4 px-8 pb-6 sm:flex-row md:px-14">
             <input
               type="text"
@@ -174,7 +133,7 @@ export default function Home() {
           </div>
         )}
 
-        {auth.isAuthenticated && !loadingResumes && visibleResumes.length > 0 && (
+        {!loadingResumes && visibleResumes.length > 0 && (
           <div className="grid animate-[fadeUp_0.7s_ease_both] grid-cols-1 gap-6 px-8 pt-2 pb-[72px] sm:grid-cols-2 md:px-14 xl:grid-cols-3">
             {visibleResumes.map((resume) => (
               <ResumeCard key={resume.id} resume={resume} onToggleArchive={handleToggleArchive} onDelete={handleDelete} />
@@ -182,19 +141,19 @@ export default function Home() {
           </div>
         )}
 
-        {auth.isAuthenticated && !loadingResumes && resumes.length === 0 && (
+        {!loadingResumes && resumes.length === 0 && (
           <div className="flex flex-col items-center gap-6 px-8 pt-[60px] pb-[120px] text-center md:px-14">
-            <p className="font-mono text-sm text-[oklch(0.63_0.014_260)]">No resumes found yet.</p>
+            <p className="font-mono text-sm text-[oklch(0.63_0.014_260)]">No archived resumes.</p>
             <Link
-              to="/upload"
+              to="/"
               className="bg-[oklch(0.85_0.19_140)] px-8 py-4 text-[15px] font-bold text-[oklch(0.16_0.014_260)] transition-[background,box-shadow] hover:bg-[oklch(0.9_0.19_140)] hover:shadow-[0_0_24px_oklch(0.85_0.19_140/40%)]"
             >
-              Upload Your First Resume
+              Back to Dashboard
             </Link>
           </div>
         )}
 
-        {auth.isAuthenticated && !loadingResumes && resumes.length > 0 && visibleResumes.length === 0 && (
+        {!loadingResumes && resumes.length > 0 && visibleResumes.length === 0 && (
           <div className="flex flex-col items-center gap-2 px-8 pt-[20px] pb-[120px] text-center md:px-14">
             <p className="font-mono text-sm text-[oklch(0.63_0.014_260)]">No resumes match your search.</p>
           </div>

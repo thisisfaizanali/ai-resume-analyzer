@@ -20,3 +20,51 @@ export function formatSize(bytes: number): string {
 
 export const generateUUID = () => crypto.randomUUID();
 
+export async function toggleResumeArchived(
+    kv: {
+        get: (key: string) => Promise<string | null | undefined>;
+        set: (key: string, value: string) => Promise<boolean | undefined>;
+    },
+    id: string
+) {
+    const raw = await kv.get(`resume:${id}`);
+    if (!raw) return;
+    const resume = JSON.parse(raw) as Resume;
+    resume.archived = !resume.archived;
+    await kv.set(`resume:${id}`, JSON.stringify(resume));
+    return resume.archived;
+}
+
+export async function updateResumeDetails(
+    kv: {
+        get: (key: string) => Promise<string | null | undefined>;
+        set: (key: string, value: string) => Promise<boolean | undefined>;
+    },
+    id: string,
+    updates: { companyName: string; jobTitle: string }
+) {
+    const raw = await kv.get(`resume:${id}`);
+    if (!raw) return;
+    const resume = { ...JSON.parse(raw), ...updates } as Resume;
+    await kv.set(`resume:${id}`, JSON.stringify(resume));
+    return resume;
+}
+
+export async function deleteResume(
+    kv: {
+        get: (key: string) => Promise<string | null | undefined>;
+        delete: (key: string) => Promise<boolean | undefined>;
+    },
+    fs: {
+        delete: (path: string) => Promise<void>;
+    },
+    id: string
+) {
+    const raw = await kv.get(`resume:${id}`);
+    if (!raw) return;
+    const resume = JSON.parse(raw) as Resume;
+    await fs.delete(resume.imagePath);
+    await fs.delete(resume.resumePath);
+    await kv.delete(`resume:${id}`);
+}
+
