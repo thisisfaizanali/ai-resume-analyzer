@@ -1,6 +1,8 @@
 <div align="center">
   <br />
-  <img src="public/readme/hero.webp" alt="Project Banner" width="100%">
+  <img src="public/readme/dashboard.png" alt="Dashboard" width="100%">
+  <br /><br />
+  <img src="public/readme/upload.png" alt="Upload & Analysis" width="100%">
   <br />
   <br />
 
@@ -23,8 +25,7 @@
 1. ✨ [Introduction](#introduction)
 2. ⚙️ [Tech Stack](#tech-stack)
 3. 🔋 [Features](#features)
-4. 📸 [Screenshots](#screenshots)
-5. 🤸 [Quick Start](#quick-start)
+4. 🤸 [Quick Start](#quick-start)
 
 ## ✨ Introduction
 
@@ -71,14 +72,6 @@ An AI-powered Resume Analyzer designed to help job seekers optimize their resume
 👉 **Inline Editing**: Update a resume's company name and job title directly from its review page, no re-upload required.
 
 👉 **Export Feedback**: Download the full AI feedback for any resume as a plain-text file.
-
-## 📸 Screenshots
-
-<div align="center">
-  <img src="public/readme/dashboard.png" alt="Dashboard" width="100%">
-  <br /><br />
-  <img src="public/readme/upload.png" alt="Upload & Analysis" width="100%">
-</div>
 
 ## 🤸 Quick Start
 
