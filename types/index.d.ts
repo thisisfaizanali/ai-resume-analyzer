@@ -5,6 +5,8 @@ interface Resume {
     imagePath: string;
     resumePath: string;
     feedback: Feedback;
+    archived?: boolean;
+    createdAt?: number;
 }
 
 interface Feedback {

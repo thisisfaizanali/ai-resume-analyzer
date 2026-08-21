@@ -1,44 +1,26 @@
-import ScoreGauge from "~/components/ScoreGauge";
-import ScoreBadge from "~/components/ScoreBadge";
-
-const Category = ({ title, score }: { title: string, score: number }) => {
-    const textColor = score > 70 ? 'text-green-600'
-            : score > 49
-        ? 'text-yellow-600' : 'text-red-600';
-
-    return (
-        <div className="resume-summary">
-            <div className="category">
-                <div className="flex flex-row gap-2 items-center justify-center">
-                    <p className="text-2xl">{title}</p>
-                    <ScoreBadge score={score} />
-                </div>
-                <p className="text-2xl">
-                    <span className={textColor}>{score}</span>/100
-                </p>
-            </div>
-        </div>
-    )
-}
+const ScoreRow = ({ title, score }: { title: string, score: number }) => (
+    <div className="flex items-center justify-between border-b border-[oklch(1_0_0/10%)] py-3 last:border-b-0">
+        <span className="font-mono text-[15px] text-[oklch(0.96_0.006_260)]">{title}</span>
+        <span className="font-mono font-bold text-[oklch(0.85_0.19_140)]">[{score}]</span>
+    </div>
+)
 
 const Summary = ({ feedback }: { feedback: Feedback }) => {
     return (
-        <div className="bg-white rounded-2xl shadow-md w-full">
-            <div className="flex flex-row items-center p-4 gap-8">
-                <ScoreGauge score={feedback.overallScore} />
-
-                <div className="flex flex-col gap-2">
-                    <h2 className="text-2xl font-bold">Your Resume Score</h2>
-                    <p className="text-sm text-gray-500">
-                        This score is calculated based on the variables listed below.
-                    </p>
+        <div>
+            <div className="mb-5 flex items-baseline gap-5">
+                <p className="m-0 font-mono text-[52px] font-semibold text-[oklch(0.85_0.19_140)]">{feedback.overallScore}</p>
+                <div>
+                    <p className="m-0 font-display text-[15px] font-bold text-[oklch(0.96_0.006_260)]">YOUR RESUME SCORE</p>
+                    <p className="m-0 text-xs text-[oklch(0.63_0.014_260)]">Calculated from the variables below</p>
                 </div>
             </div>
-
-            <Category title="Tone & Style" score={feedback.toneAndStyle.score} />
-            <Category title="Content" score={feedback.content.score} />
-            <Category title="Structure" score={feedback.structure.score} />
-            <Category title="Skills" score={feedback.skills.score} />
+            <div className="flex flex-col">
+                <ScoreRow title="TONE & STYLE" score={feedback.toneAndStyle.score} />
+                <ScoreRow title="CONTENT" score={feedback.content.score} />
+                <ScoreRow title="STRUCTURE" score={feedback.structure.score} />
+                <ScoreRow title="SKILLS" score={feedback.skills.score} />
+            </div>
         </div>
     )
 }

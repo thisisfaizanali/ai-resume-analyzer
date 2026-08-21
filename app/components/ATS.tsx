@@ -11,65 +11,27 @@ interface ATSProps {
 }
 
 const ATS: React.FC<ATSProps> = ({ score, suggestions }) => {
-  // Determine background gradient based on score
-  const gradientClass = score > 69
-    ? 'from-green-100'
+  const verdict = score > 69
+    ? 'GREAT JOB'
     : score > 49
-      ? 'from-yellow-100'
-      : 'from-red-100';
-
-  // Determine icon based on score
-  const iconSrc = score > 69
-    ? '/icons/ats-good.svg'
-    : score > 49
-      ? '/icons/ats-warning.svg'
-      : '/icons/ats-bad.svg';
-
-  // Determine subtitle based on score
-  const subtitle = score > 69
-    ? 'Great Job!'
-    : score > 49
-      ? 'Good Start'
-      : 'Needs Improvement';
+      ? 'GOOD START'
+      : 'NEEDS IMPROVEMENT';
 
   return (
-    <div className={`bg-gradient-to-b ${gradientClass} to-white rounded-2xl shadow-md w-full p-6`}>
-      {/* Top section with icon and headline */}
-      <div className="flex items-center gap-4 mb-6">
-        <img src={iconSrc} alt="ATS Score Icon" className="w-12 h-12" />
-        <div>
-          <h2 className="text-2xl font-bold">ATS Score - {score}/100</h2>
-        </div>
-      </div>
-
-      {/* Description section */}
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">{subtitle}</h3>
-        <p className="text-gray-600 mb-4">
-          This score represents how well your resume is likely to perform in Applicant Tracking Systems used by employers.
-        </p>
-
-        {/* Suggestions list */}
-        <div className="space-y-3">
-          {suggestions.map((suggestion, index) => (
-            <div key={index} className="flex items-start gap-3">
-              <img
-                src={suggestion.type === "good" ? "/icons/check.svg" : "/icons/warning.svg"}
-                alt={suggestion.type === "good" ? "Check" : "Warning"}
-                className="w-5 h-5 mt-1"
-              />
-              <p className={suggestion.type === "good" ? "text-green-700" : "text-amber-700"}>
-                {suggestion.tip}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Closing encouragement */}
-      <p className="text-gray-700 italic">
-        Keep refining your resume to improve your chances of getting past ATS filters and into the hands of recruiters.
+    <div className="border border-[oklch(1_0_0/8%)] bg-[oklch(0.21_0.015_260)] p-6">
+      <p className="m-0 mb-1.5 font-mono text-[11px] tracking-[0.08em] text-[oklch(0.63_0.014_260)] uppercase">ATS Score</p>
+      <p className="m-0 mb-3.5 font-display text-[26px] font-bold text-[oklch(0.96_0.006_260)]">{score}/100 — {verdict}</p>
+      <p className="m-0 mb-3.5 text-sm text-[oklch(0.63_0.014_260)]">
+        This score reflects how well your resume performs in Applicant Tracking Systems.
       </p>
+
+      <div className="flex flex-col gap-2 font-mono text-[13px]">
+        {suggestions.map((suggestion, index) => (
+          <p key={index} className="m-0" style={{ color: suggestion.type === "good" ? "oklch(0.85 0.19 140)" : "oklch(0.8 0.19 80)" }}>
+            [{suggestion.type === "good" ? "OK" : "!!"}] {suggestion.tip}
+          </p>
+        ))}
+      </div>
     </div>
   )
 }
