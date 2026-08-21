@@ -47,10 +47,6 @@ textarea {
   @apply w-full p-4 inset-shadow rounded-2xl focus:outline-none bg-white;
 }
 
-form {
-  @apply flex flex-col items-start gap-8 w-full;
-}
-
 @layer components {
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[#AB8C95] via-[#000000] to-[#8E97C5];

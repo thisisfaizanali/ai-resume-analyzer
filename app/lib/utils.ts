@@ -63,8 +63,12 @@ export async function deleteResume(
     const raw = await kv.get(`resume:${id}`);
     if (!raw) return;
     const resume = JSON.parse(raw) as Resume;
-    await fs.delete(resume.imagePath);
-    await fs.delete(resume.resumePath);
     await kv.delete(`resume:${id}`);
+    try {
+        await fs.delete(resume.imagePath);
+        await fs.delete(resume.resumePath);
+    } catch {
+        // kv record is already gone, so the resume won't reappear even if file cleanup fails
+    }
 }
 
