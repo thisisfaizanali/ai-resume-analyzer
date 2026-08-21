@@ -7,7 +7,7 @@ import {convertPdfToImage} from "~/lib/pdf2img";
 import {generateUUID} from "~/lib/utils";
 import {prepareInstructions} from "../../constants";
 
-const inputClass = "w-full !rounded-none border border-[oklch(1_0_0/14%)] !bg-[oklch(0.21_0.015_260)] p-3.5 !shadow-none text-base !text-[oklch(0.96_0.006_260)] outline-none transition-colors focus:border-[oklch(0.85_0.19_140)] focus:shadow-[0_0_0_3px_oklch(0.85_0.19_140/15%)]";
+const inputClass = "w-full !rounded-none border border-[oklch(1_0_0/14%)] !bg-[oklch(0.21_0.015_260)] p-4 !shadow-none text-base !text-[oklch(0.96_0.006_260)] outline-none transition-colors focus:border-[oklch(0.85_0.19_140)] focus:shadow-[0_0_0_3px_oklch(0.85_0.19_140/15%)]";
 
 const STEPS = [
     'Uploading the file...',
@@ -151,7 +151,7 @@ const Upload = () => {
                     </div>
 
                     {!isProcessing && (
-                        <form onSubmit={handleSubmit} className="flex flex-col !gap-[22px]">
+                        <form onSubmit={handleSubmit} className="flex h-full flex-col !gap-[22px]">
                             <div>
                                 <label htmlFor="company-name" className="mb-2 block font-mono text-[11px] tracking-[0.08em] !text-[oklch(0.63_0.014_260)] uppercase">Company Name</label>
                                 <input
@@ -166,11 +166,11 @@ const Upload = () => {
                                     className={inputClass}
                                 />
                             </div>
-                            <div>
+                            <div className="flex flex-1 flex-col">
                                 <label htmlFor="job-description" className="mb-2 block font-mono text-[11px] tracking-[0.08em] !text-[oklch(0.63_0.014_260)] uppercase">Job Description</label>
                                 <textarea
-                                    rows={3} name="job-description" id="job-description" placeholder="Paste the listing..."
-                                    className={`${inputClass} resize-none`}
+                                    name="job-description" id="job-description" placeholder="Paste the listing..."
+                                    className={`${inputClass} min-h-[120px] flex-1 resize-none`}
                                 />
                             </div>
                             <div>
