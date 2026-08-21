@@ -23,7 +23,8 @@
 1. ✨ [Introduction](#introduction)
 2. ⚙️ [Tech Stack](#tech-stack)
 3. 🔋 [Features](#features)
-4. 🤸 [Quick Start](#quick-start)
+4. 📸 [Screenshots](#screenshots)
+5. 🤸 [Quick Start](#quick-start)
 
 ## ✨ Introduction
 
@@ -63,6 +64,22 @@ An AI-powered Resume Analyzer designed to help job seekers optimize their resume
 
 👉 **Modern UI/UX**: Clean, responsive design built with Tailwind CSS and shadcn/ui for a sleek user experience.
 
+👉 **Archive & Delete**: Archive resumes out of the main dashboard without losing them, restore them anytime from a dedicated Archive view, or delete them permanently with a themed confirmation dialog.
+
+👉 **Search & Sort**: Filter your dashboard by company or job title, and sort by newest or by ATS score.
+
+👉 **Inline Editing**: Update a resume's company name and job title directly from its review page, no re-upload required.
+
+👉 **Export Feedback**: Download the full AI feedback for any resume as a plain-text file.
+
+## 📸 Screenshots
+
+<div align="center">
+  <img src="public/readme/dashboard.png" alt="Dashboard" width="100%">
+  <br /><br />
+  <img src="public/readme/upload.png" alt="Upload & Analysis" width="100%">
+</div>
+
 ## 🤸 Quick Start
 
 Follow these steps to set up the project locally on your machine.
@@ -78,7 +95,7 @@ Make sure you have the following installed on your machine:
 **Cloning the Repository**
 
 ```bash
-git clone https://github.com/thisisfaizanali/resume-analyzer.git
+git clone https://github.com/thisisfaizanali/ai-resume-analyzer.git
 cd ai-resume-analyzer
 ```
 
